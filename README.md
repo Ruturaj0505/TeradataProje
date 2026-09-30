@@ -26,5 +26,21 @@ So the overall flow is:
 
 Teradata → InfoWorks → Snowflake L0 → L1 → L2 → Downstream/Power BI
 
-L0 is mainly raw ingestion, L1 is clean and transformed data, and L2 is business-ready integrated data for downstream consumption.”
+What actaully each layer does ?
+
+L0 — “What exactly happens?”
+“L0 is the first landing layer. InfoWorks extracts the required data from Teradata and loads it into Snowflake L0. We preserve the source data with minimal transformation and perform technical validations.”
+L1 — “What exactly do YOU do?”
+“In L1, I work on the transformation and data-quality logic. I handle duplicates, mandatory null checks, data-type conversion, standardization, joins, filtering and business rules. The objective is to convert raw L0 data into clean and consistent data.”
+L2 — “What exactly happens?”
+“L2 is the business-ready layer. We integrate the required L1 datasets, apply final business logic and prepare fact or dimension datasets required by downstream consumers.”
+Downstream — “What happens after L2?”
+“The reporting and analytics team consumes L2 tables or views. They use that data for Power BI dashboards, reports and analytical requirements.”
+
+“Teradata is a relational database, so the data is stored in structured tables in rows and columns. We don't receive a JSON or CSV file inside Teradata. The source data is available as tables with defined columns and data types, and we extract the required records from those tables using SQL or the configured InfoWorks workflow.”
+If he asks “Then how does it move to Snowflake?”:
+“InfoWorks connects to the Teradata source, reads the required tables or records, and moves the data according to the configured workflow. The data is then loaded into the Snowflake L0 tables, where we preserve the source structure as much as possible.”
+“A Teradata batch is a scheduled set of data-processing jobs that runs at a predefined time. It can extract or process the required data from Teradata and make the data ready for downstream processing. Once the batch is completed successfully, our InfoWorks workflow can start the next step of extracting that data and loading it into Snowflake.”
+
+
 
