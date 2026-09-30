@@ -1,11 +1,11 @@
-How did you handle JSON data in your project?”, 
+1. How did you handle JSON data in your project?”, 
 answer naturally like this:
 “When we receive JSON data, first we load the raw JSON into a Snowflake staging table. Snowflake supports semi-structured data using the VARIANT data type.
 In the staging layer, we keep the raw JSON so that we don't lose the original structure. Then in the transformation layer, we use Snowflake functions like : and FLATTEN to extract the required fields and arrays.
 For example, if the JSON contains customer details like customer ID, name and address, I extract those fields and transform them into relational columns. Then I apply validations and business transformations and load the required data into the target tables.”
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
- ACtual L0,L1, and L2 does in Teradata project ?
+ 2. Actual L0,L1, and L2 does in Teradata project ?
  
 "In my current project, Teradata is one of our main source systems. Business data is generated or updated in Teradata during the day, and based on the agreed batch schedule, we pick it up for downstream processing.
 
@@ -24,5 +24,5 @@ Before publishing L2, we run validations: record count reconciliation, duplicate
 Downstream, the reporting and analytics team consumes the L2 tables or views for Power BI dashboards and reports. They never need to touch the raw L0 data.
 
 So the overall flow is: Teradata → InfoWorks → Snowflake L0 → L1 → L2 → Power BI.
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 My role was writing and optimizing the Snowflake SQL for the L1 and L2 transformations, handling incremental load logic, validating data against the source, and fixing data-quality and performance issues.
