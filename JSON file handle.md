@@ -21,6 +21,10 @@ L1 is the cleansing and transformation layer, and this is where I mainly work. I
 
 L2 is the business-ready layer. Here we integrate the required L1 datasets, apply the final business logic, and build the fact and dimension datasets. For example, if customer data comes from one source and transactions from another, we integrate them in L2 to produce a business-level customer or transaction dataset.
 
+“In our project, L2 was the business-ready layer. The data was already cleaned in L1, and in L2 I joined the required L1 tables, applied business rules, filters, calculations and aggregations, and created the required fact or dimension tables.
+
+We handled incremental inserts and updates, then performed validations like record counts, duplicates and null checks. After validation, the L2 data was consumed by the downstream reporting team for Power BI dashboards and analytics
+
 Before publishing L2, we run validations: record count reconciliation, duplicate checks, null checks, and business-rule checks.
 
 Downstream, the reporting and analytics team consumes the L2 tables or views for Power BI dashboards and reports. They never need to touch the raw L0 data.
