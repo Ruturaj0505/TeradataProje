@@ -17,7 +17,6 @@ METADATA$ROW_ID
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## what is Snowpipe and how it works?
-
    Snowpipe is Snowflake’s continuous data ingestion service. It is used to automatically load new files from cloud storage like Amazon S3 into a Snowflake table as soon as they arrive.
    
 The flow is: S3 → Event Notification → Snowpipe → Snowflake staging table.
