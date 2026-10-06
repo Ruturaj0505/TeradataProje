@@ -28,10 +28,13 @@ Teradata → InfoWorks → Snowflake L0 → L1 → L2 → Downstream/Power BI
 
 L0 — “What exactly happens?”
 “L0 is the first landing layer. InfoWorks extracts the required data from Teradata and loads it into Snowflake L0. We preserve the source data with minimal transformation and perform technical validations.”
+
 L1 — “What exactly do YOU do?”
 “In L1, I work on the transformation and data-quality logic. I handle duplicates, mandatory null checks, data-type conversion, standardization, joins, filtering and business rules. The objective is to convert raw L0 data into clean and consistent data.”
+
 L2 — “What exactly happens?”
 “L2 is the business-ready layer. We integrate the required L1 datasets, apply final business logic and prepare fact or dimension datasets required by downstream consumers.”
+
 Downstream — “What happens after L2?”
 “The reporting and analytics team consumes L2 tables or views. They use that data for Power BI dashboards, reports and analytical requirements.”
 
