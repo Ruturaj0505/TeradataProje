@@ -81,8 +81,8 @@ For example, in one table the row counts matched but a string column did not, be
 "I looked for a column that reliably changes whenever a row changes, usually a last_updated_ts or a monotonically increasing ID. I checked that it's indexed and not null in Teradata, and that updates always touch it."
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 6. How did you handle deletes and late-arriving records?
+   --
 
 "A watermark only catches inserts and updates. For deletes, we either used a soft-delete flag from the source or ran a periodic full key comparison. For late-arriving records, we reloaded a small lookback window, for example the last few days, and merged on the primary key so nothing duplicated."
 
