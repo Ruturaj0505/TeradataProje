@@ -30,5 +30,7 @@ Before publishing L2, we run validations: record count reconciliation, duplicate
 Downstream, the reporting and analytics team consumes the L2 tables or views for Power BI dashboards and reports. They never need to touch the raw L0 data.
 
 So the overall flow is: Teradata → InfoWorks → Snowflake L0 → L1 → L2 → Power BI.
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
 My role was writing and optimizing the Snowflake SQL for the L1 and L2 transformations, handling incremental load logic, validating data against the source, and fixing data-quality and performance issues.
