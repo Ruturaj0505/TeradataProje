@@ -1,4 +1,4 @@
-1. What is Streams and Types of Streams ?
+## What is Streams and Types of Streams ?
 
 Snowflake streams is change data capture(CDC) machanism used to track changes in data at row level in snowflake.
 
@@ -16,7 +16,7 @@ METADATA$ROW_ID
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-2. what is Snowpipe and how it works?
+## what is Snowpipe and how it works?
 
    Snowpipe is Snowflake’s continuous data ingestion service. It is used to automatically load new files from cloud storage like Amazon S3 into a Snowflake table as soon as they arrive.
    
@@ -29,7 +29,7 @@ What happens if Snowpipe fails?"
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-3.What is task and how it works ?
+## What is task and how it works ?
 
 A Snowflake Task is used to automate SQL statements or stored procedures. We can schedule a task to run at a specific time or at a regular interval, and we can also create task dependencies where one task runs after another.
 For example, in my pipeline, after Snowpipe loads data from S3 into the staging table, a Task can pick up that data, perform transformations, and load it into the target table.
