@@ -14,6 +14,8 @@ METADATA$ACTION (INSERT/DELETE)
 METADATA$ISUPDATE
 METADATA$ROW_ID
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 2. what is Snowpipe and how it works?
 
    Snowpipe is Snowflake’s continuous data ingestion service. It is used to automatically load new files from cloud storage like Amazon S3 into a Snowflake table as soon as they arrive.
@@ -25,10 +27,14 @@ For example, when a new JSON or CSV file is uploaded to S3, an event notificatio
 What happens if Snowpipe fails?"
 “First, I check the Snowpipe load history and error details to identify whether the issue is related to the file, permissions, stage, or target table. After fixing the issue, I reprocess the failed files and validate the record count and data quality.”
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 3.What is task and how it works ?
 
 A Snowflake Task is used to automate SQL statements or stored procedures. We can schedule a task to run at a specific time or at a regular interval, and we can also create task dependencies where one task runs after another.
 For example, in my pipeline, after Snowpipe loads data from S3 into the staging table, a Task can pick up that data, perform transformations, and load it into the target table.
 So basically, Snowpipe handles the ingestion, and Task handles the automated processing or transformation.”
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
    
     
