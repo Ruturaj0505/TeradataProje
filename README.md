@@ -82,6 +82,52 @@ For example, in one table the row counts matched but a string column did not, be
 
 "A watermark only catches inserts and updates. For deletes, we either used a soft-delete flag from the source or ran a periodic full key comparison. For late-arriving records, we reloaded a small lookback window, for example the last few days, and merged on the primary key so nothing duplicated."
 
+## 7. Why did you use InfoWorks?
+“InfoWorks was used as the ingestion and pipeline management tool. It connected to Teradata, extracted the required data, and loaded it into Snowflake based on the configured load strategy.”
+
+## 8. “How exactly did you implement incremental loading using a watermark?”
+“For tables where we had a reliable last-updated timestamp, we used that as the watermark. We stored the last successfully processed timestamp. During the next run, InfoWorks extracted only records where the source update timestamp was greater than the previous watermark. After the load completed successfully, the watermark was updated for the next run.”
+
+If they ask: “Give me an example.”
+“For example, if the previous successful watermark was 10:00 AM, the next run would pick records updated after 10:00 AM. So instead of reading the entire table, we processed only the new or updated records.”
+
+Cross-question: “What if there is no reliable timestamp?”
+“Then I wouldn't use a timestamp-based incremental strategy blindly. We would need another change-detection mechanism, such as CDC, a sequence column, or source-system change tracking.”
+
+## 9. “How did you reduce the load time from hours to 15–30 minutes?”
+“First, I identified that large tables were processing too much data through full loads. For suitable tables, I changed them to incremental loading using a watermark, so only new or changed records were extracted. We also divided large reads into parallel ranges using a suitable key column, and adjusted the Snowflake warehouse size based on the workload. These changes reduced the amount of data processed and improved parallelism, bringing the load time down to around 15–30 minutes.”
+
+If they ask: “How did you know your optimization worked?”
+“I compared the execution time and processed record volume before and after the changes. The same table that previously took several hours was completing in roughly 15–30 minutes after optimization.”
+
+## 10. “How did you implement deduplication using ROW_NUMBER()?”
+“We partitioned the records by the business or primary key and ordered them by the latest update or load timestamp in descending order. The latest record received ROW_NUMBER() = 1, and we retained only that record.”
+
+Example:
+WITH ranked AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY customer_id
+            ORDER BY updated_timestamp DESC
+        ) AS rn
+    FROM source_data
+)
+SELECT *
+FROM ranked
+WHERE rn = 1;
+
+If they ask: “What if two records have the same timestamp?”
+“Then timestamp alone isn't sufficient. We use another column as a tie-breaker, such as an ingestion timestamp, sequence number, or another reliable column.”
+
+## 11. “Explain your three-step source-to-target validation.”
+“First, I compared the row counts between Teradata and Snowflake. If they matched, I moved to column-level validation, where I compared things like null counts, distinct counts, sums, minimum and maximum values. Finally, for important tables, I performed a primary-key-based comparison to identify missing or mismatched records.”
+
+If they ask: “Give me an actual mismatch example.”
+“In one case, the row counts matched, but a string column was different. During investigation, I found that the Teradata column was CHAR, so it contained trailing spaces. I applied TRIM() in the L1 transformation and reran the validation, after which the comparison passed.”
+
+If they ask: “What other mismatches did you see?”
+“We also encountered timestamp precision and decimal precision or scale differences. I checked the source and target definitions, standardized the transformation, and reran the validation.”
 
 
 
