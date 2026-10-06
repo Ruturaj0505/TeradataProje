@@ -42,12 +42,12 @@ If he asks “Then how does it move to Snowflake?”:
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-What was your responsibility?(Short ans)
+1. What was your responsibility?(Short ans)
 
-My main responsibilities were L0 ingestion, L1/L2 transformations, and migration validation. I worked on InfoWorks pipelines for Teradata-to-Snowflake ingestion, built dbt models for the transformation layers, and performed source-to-target validation to make sure the migrated data was accurate.
+   My main responsibilities were L0 ingestion, L1/L2 transformations, and migration validation. I worked on InfoWorks pipelines for Teradata-to-Snowflake    ingestion, built dbt models for the transformation layers, and performed source-to-target validation to make sure the migrated data was accurate.
 
 
-What is your main responsibility in project ? (Berief Explaination)
+2. What is your main responsibility in project ? (Berief Explaination)
 
 In this project, we were migrating an enterprise data warehouse from Teradata to Snowflake. My main responsibilities were L0 ingestion, L1/L2 transformations, and data validation.
 
@@ -63,15 +63,28 @@ So overall, my responsibility was to move the data from Teradata to Snowflake, t
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-How did you do the ingestion?
+3. How did you do the ingestion?
+
 For ingestion, I worked on InfoWorks pipelines for 100+ tables, where raw Teradata data was loaded into the L0 layer in Snowflake. Some large-table loads were initially taking several hours, so I worked on optimizing them. For suitable tables, I changed full loads to incremental loads using a watermark column, used parallel reads based on key columns, and adjusted the Snowflake warehouse size. This brought the load time for those tables down to around 15 to 30 minutes.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-How did you do validation?
+4. How did you do validation?
+
 For validation, we followed a three-step approach. First, we compared row counts between Teradata and Snowflake. Second, we checked column-level metrics like null counts, distinct counts, sums, and minimum and maximum values. Third, for important tables, we compared records on the primary key to find missing or mismatched rows. I ran these checks for the tables I owned and investigated every mismatch.
 
 For example, in one table the row counts matched but a string column did not, because Teradata CHAR columns carry trailing spaces. I added a TRIM in the L1 model and the comparison passed. Other mismatches came from timestamp precision and decimal rounding, and I fixed those in the mapping or transformation and reran the validation.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+5. How did you choose the watermark column?
+
+"I looked for a column that reliably changes whenever a row changes, usually a last_updated_ts or a monotonically increasing ID. I checked that it's indexed and not null in Teradata, and that updates always touch it."
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. How did you handle deletes and late-arriving records?
+
+"A watermark only catches inserts and updates. For deletes, we either used a soft-delete flag from the source or ran a periodic full key comparison. For late-arriving records, we reloaded a small lookback window, for example the last few days, and merged on the primary key so nothing duplicated."
 
 
 
