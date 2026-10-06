@@ -82,37 +82,7 @@ Overall, my main strength is automating data infrastructure and making Snowflake
 
 &nbsp;
 
-&nbsp;
 
-## 2. Explain your project
-
-My current project is a cloud-based data platform built on Snowflake. The main goal of the project is to bring data from different enterprise systems into one centralized and secure platform so that the data can be used for analytics and reporting.
-
-We get data from different sources such as SQL Server, PostgreSQL, Salesforce, and AWS S3. For data ingestion, we mainly use Fivetran. Fivetran extracts data from the source systems and loads it into the raw layer of Snowflake.
-
-After the data is loaded into Snowflake, we use dbt for transformation. We clean and standardize the raw data and then create business-ready datasets for reporting and analytics.
-
-My main responsibility is Snowflake infrastructure automation and governance. We use Terraform to create and manage Snowflake resources such as databases, schemas, warehouses, users, roles,and also I handle user onboarding, role hierarchy, and access grants using RBAC. We also use Terraform for some AWS resources such as S3 and IAM.
-
-I mainly work on user onboarding and access management. When a new user or team needs access to Snowflake, I first understand their requirements and then provide the appropriate role and permissions. We follow RBAC, so we assign permissions to roles instead of directly giving permissions to individual users.
-
-I also created reusable Terraform modules for Snowflake infrastructure. Before automation, the setup process took around 10 hours. After using the reusable modules, it took around 6 hours, which reduced the setup effort by about 40%.
-
-I also work on warehouse management, performance and cost optimization, monitoring, and troubleshooting.
-
-For deployment, we use GitHub and GitHub Actions. We create a pull request, perform code review, and then deploy the changes through our CI/CD pipeline.
-
-On the AWS side, we use S3 for storage, IAM for secure access, and SNS for notifications.
-
-For monitoring, we use Datadog. I mainly monitor Snowflake workloads and dynamic tables and check for failures or cases where execution takes longer than expected.
-
-We follow Agile methodology and use Jira to manage our stories, tasks, and defects.
-
-Overall, my major focus in the project is Snowflake infrastructure automation, RBAC, user access management, Terraform, and governance.
-
-&nbsp;
-
-&nbsp;
 
 ## 3. Difficult issue you solved
 
@@ -287,49 +257,6 @@ WHERE order_date BETWEEN '2026-08-01' AND '2026-08-31';
 
 &nbsp;
 
-&nbsp;
-
-## 6. RBAC. design roles and access for hundreds/thousands of users?
-
-Snowflake RBAC, or Role-Based Access Control, is a security model where permissions are assigned to roles, and roles are assigned to users. Users don't normally receive object privileges directly.
-
-The basic hierarchy is:
-
-```
-User → Role → Privileges → Objects
-```
-
-&nbsp;
-
-For example, instead of granting `SELECT` directly to 500 users, I would create an `ANALYST_ROLE`, grant the required privileges to that role, and assign the role to the users.
-
-&nbsp;
-
-### How I would design RBAC for hundreds/thousands of users
-
-I would not create one role per user. That doesn't scale and becomes difficult to audit.
-
-Instead, I would use a role hierarchy based on job function and access level.
-
-```
-                 ACCOUNTADMIN
-                      │
-                SECURITYADMIN
-                      │
-              DATA_PLATFORM_ADMIN
-                      │
-          ┌───────────┴───────────┐
-          │                       │
-      DATA_ENGINEER          DATA_ANALYST
-          │                       │
-    ETL / Transform          Read Reports
-          │
-      DEVELOPER_ROLE
-```
-
-&nbsp;
-
-&nbsp;
 
 ## SCD Type. implement both in DBT/Snowflake? Which one used in your project?
 
