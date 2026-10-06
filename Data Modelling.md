@@ -1,4 +1,5 @@
-##Questions
+Questions
+
 Compare star and snowflake schemas.
 What are fact and dimension tables?
 Explain fact-table grain and why it must be defined first.
