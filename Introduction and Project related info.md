@@ -4,7 +4,9 @@ I’m Ruturaj Shinde, a Lead Software Engineer at Persistent Systems with around
 
 My work is mainly focused on SQL, Snowflake, and dbt, with experience in data transformation, performance optimization, and data validation to ensure the data is accurate and reliable.
 
-Currently, I’m working on a Teradata-to-Snowflake migration project, where I work on ingestion, L1/L2 transformations, and source-to-target validation. I’ve also worked with Snowflake features like Snowpipe, Streams, and Tasks.
+Currently, I’m working on a Teradata-to-Snowflake migration project, where I work on ingestion, L1/L2 transformations, and source-to-target validation.
+
+Previously, I worked on a Unified Data Platform on Snowflake, where I worked with Snowpipe, dbt, AWS, semi-structured data, and curated data models for analytics and reporting.
 
 
 ## 2. What was your responsibility?(Short ans)
