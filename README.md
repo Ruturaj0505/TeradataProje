@@ -1,42 +1,25 @@
 # TeradataProject
 
-“In our project, Teradata is one of the main source systems. The source data is generated or updated in Teradata during the business day, and based on the agreed batch schedule, the required data is picked up for our downstream processing.
+In our project, Teradata is one of the main source systems. The data is generated or updated in Teradata during the business day, and based on the agreed batch schedule, the required data is picked up for downstream processing.
 
-We use InfoWorks as the data-integration and workflow orchestration tool. InfoWorks connects to the Teradata source, extracts the required data based on the configured jobs and load strategy, and transfers the data to the Snowflake environment.
+We use InfoWorks as the data-integration and workflow tool for ingestion. InfoWorks connects to Teradata, extracts the required data based on the configured jobs and load strategy, and loads it into Snowflake. For incremental loads, we identify new or updated records using a timestamp or key, and InfoWorks moves only those records.
 
-For example, if it is an incremental load, we identify the records that are newly inserted or updated using the appropriate timestamp, key or change-based logic. InfoWorks then handles the extraction and movement of those records according to the scheduled workflow.
+In Snowflake, the data first lands in the L0 layer, our raw layer. We keep the source structure as close to the original as possible and apply no business transformations. We only do technical validations like load status, record counts, and data-type checks.
 
-Once the data reaches Snowflake, we first load it into the L0 layer. L0 is our raw or landing layer. Here, we try to keep the source data as close to the original structure as possible. We don't apply major business transformations in L0. We mainly perform basic ingestion and technical validations such as file/load status, record counts and data-type checks.
+From L0 onwards, the transformations are built as dbt models in Snowflake. Once the InfoWorks load into L0 completes successfully, the dbt run is triggered [by the scheduled workflow / by the scheduler you use], first for L1 and then for L2. We use source() to read the L0 tables and ref() between models, so dbt handles lineage and run order.
 
-From L0, the data moves to L1. L1 is where we actually start cleaning and transforming the data.
+In L1, we clean the data: duplicates removed with ROW_NUMBER, mandatory null checks, data-type conversion, trimming and standardization, filtering invalid records, and dataset-specific business rules. In L2, we combine the L1 datasets, apply the final business logic, and create business-ready dimensions and facts. For example, customer data from one source and transaction data from another are integrated in L2 into a business-level dataset. For large tables, we use incremental models with the merge strategy, so only new or changed rows are processed.
 
-For example, in L1 we handle duplicate records, null validations for mandatory columns, data-type conversions, standardization of values, filtering invalid records, joins with other required source data, and deriving required columns. We also apply the business rules required for that particular dataset.
+We also added dbt tests such as unique, not_null, and relationships, so data quality problems are caught when the models run.
 
-After the L1 transformation, the data moves to L2. L2 contains the more business-ready and integrated data. Here, we combine the required L1 datasets, apply the final business logic, create the required dimensions or facts, and prepare the data in a format that can directly be consumed by downstream applications.
+After L2, we do final validation: record counts, duplicate checks, null checks, reconciliation against Teradata, and business-rule checks. The reporting team then consumes the L2 tables or views for Power BI.
 
-For example, if customer information comes from one source and transaction information comes from another source, we can integrate those datasets in L2 and produce a business-level customer or transaction dataset.
+The overall flow is: Teradata → InfoWorks → Snowflake L0 → dbt L1 → dbt L2 → Power BI."
 
-Once L2 processing is completed, we perform final validation such as record counts, duplicate checks, null checks, reconciliation and business-rule validation.
-
-The downstream team then consumes the L2 data. In our case, the reporting or analytics team can use these L2 tables or views for Power BI dashboards, reports or further analytical processing. So the downstream team does not need to work directly with the raw L0 data; they mainly consume the validated and business-ready L2 data.
-
-So the overall flow is:
-
-Teradata → InfoWorks → Snowflake L0 → L1 → L2 → Downstream/Power BI
-
-## What actaully each layer does ?
-
-L0 — “What exactly happens?”
-“L0 is the first landing layer. InfoWorks extracts the required data from Teradata and loads it into Snowflake L0. We preserve the source data with minimal transformation and perform technical validations.”
-
-L1 — “What exactly do YOU do?”
-“In L1, I work on the transformation and data-quality logic. I handle duplicates, mandatory null checks, data-type conversion, standardization, joins, filtering and business rules. The objective is to convert raw L0 data into clean and consistent data.”
-
-L2 — “What exactly happens?”
-“L2 is the business-ready layer. We integrate the required L1 datasets, apply final business logic and prepare fact or dimension datasets required by downstream consumers.”
-
-Downstream — “What happens after L2?”
-“The reporting and analytics team consumes L2 tables or views. They use that data for Power BI dashboards, reports and analytical requirements.”
+Updated layer answers
+L0: "InfoWorks extracts the data from Teradata and loads it into Snowflake L0. We preserve the source data with minimal transformation and do technical validations."
+L1: "I build the dbt models for the cleansing and data-quality logic: duplicates, null checks, data-type conversion, standardization, and business rules. The goal is clean, consistent data."
+L2: "L2 is the business-ready layer. I build dbt models that integrate the L1 datasets, apply final business logic, and prepare facts and dimensions for downstream use."
 
 “Teradata is a relational database, so the data is stored in structured tables in rows and columns. We don't receive a JSON or CSV file inside Teradata. The source data is available as tables with defined columns and data types, and we extract the required records from those tables using SQL or the configured InfoWorks workflow.”
 If he asks “Then how does it move to Snowflake?”:
