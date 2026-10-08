@@ -1,4 +1,4 @@
-## 1. Your source contains 10 million records, but the target contains only 9.7 million after the pipeline completes. How would you identify where the 300K records were lost?
+# 1. Your source contains 10 million records, but the target contains only 9.7 million after the pipeline completes. How would you identify where the 300K records were lost?
  10M source vs 9.7M target
 First, I would compare the record counts at each stage—source, ingestion/L0, transformation/L1, and final target. Then I would use business keys to identify records present in the source but missing from the target. I’d check filters, joins, duplicate handling, rejected records, and incremental-load conditions. This helps me identify exactly at which stage the 300K records were lost.”
 
