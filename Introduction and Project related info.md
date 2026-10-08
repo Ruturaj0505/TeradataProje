@@ -1,6 +1,5 @@
 ## 1. Introduction
-
-I’m Ruturaj Shinde, a Lead Software Engineer at Persistent Systems with around 4 years of experience working with data platforms and SQL-based data processing.
+I'm Ruturaj Shinde, a Lead Software Engineer at Persistent Systems. I have around 4 years of experience in data engineering, mainly with SQL, Snowflake, and dbt
 
 My work is mainly focused on SQL, Snowflake, and dbt, with experience in data transformation, performance optimization, and data validation to ensure the data is accurate and reliable.
 
