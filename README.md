@@ -48,10 +48,10 @@ So overall, my responsibility was to move the data from Teradata to Snowflake, t
 ## 3.Difficluts u faced ?
 In the Teradata-to-Snowflake migration, I owned the L0 ingestion pipelines in InfoWorks for 100+ tables. Some of the large tables were taking several hours to load, which was a risk for the batch window and for everything downstream."
 
-# Task:
+### Task:
 "I had to bring the load time down without affecting data accuracy."
 
- # Action:
+### Action:
 "First, I looked at where the time was going. The large tables were doing a full load every time, and the read from Teradata was a single stream. So I made three   changes:
 
 For tables with a reliable timestamp column and no hard deletes, I changed the full load to an incremental load using a watermark column.
@@ -60,7 +60,7 @@ I adjusted the Snowflake warehouse size for the heavy loads.
 
 After each change I validated the data against Teradata with row counts and column-level checks, to confirm that faster did not mean wrong."
 
-# Result:
+### Result:
 "The load time for those tables came down from several hours to around 15 to 30 minutes, and the validation still passed."
 
 ## 3. How did you do the ingestion?
