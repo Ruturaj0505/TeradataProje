@@ -34,6 +34,32 @@ A Snowflake Task is used to automate SQL statements or stored procedures. We can
 For example, in my pipeline, after Snowpipe loads data from S3 into the staging table, a Task can pick up that data, perform transformations, and load it into the target table.
 So basically, Snowpipe handles the ingestion, and Task handles the automated processing or transformation.”
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### What is micro-partitioning?
+
+When data is loaded into a Snowflake table, Snowflake automatically divides the table into small, contiguous storage units called micro-partitions.
+
+You don't manually create these partitions like traditional databases.
+
+For each micro-partition, Snowflake maintains metadata such as:
+
+- Minimum and maximum values
+- Number of distinct values
+- NULL information
+- Other statistics used by the optimizer
+
+&nbsp;
+
+### What is partition pruning?
+
+Partition pruning is the process of eliminating micro-partitions that cannot contain the required data before Snowflake scans them.
+
+```sql
+SELECT SUM(amount)
+FROM orders
+WHERE order_date BETWEEN '2026-08-01' AND '2026-08-31';
+```
+
+&nbsp;
    
     
