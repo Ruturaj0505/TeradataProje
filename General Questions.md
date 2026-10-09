@@ -1,19 +1,8 @@
-
-&nbsp;
-
-&nbsp;
-
-&nbsp;
-
 # Questions
 
-1. Tell me about yourself
-2. Explain your project
-3. What was the most difficult issue you solved?
 4. Why did you choose Snowflake? Explain its architecture and how it differs from traditional databases.
 5. How did you use Snowflake and dbt together in your project?
 6. Why did you use dbt instead of writing transformation SQL directly in Snowflake?
-7. Explain Snowflake micro-partitioning and partition pruning.
 8. How do you improve query performance?
 9. Explain Snowflake RBAC. How would you design roles and access for hundreds/thousands of users?
 10. What is SCD Type 1 and SCD Type 2. How would you implement SCD Type 1 and SCD Type 2 in DBT/Snowflake? Which one have you used in your project?
@@ -25,67 +14,7 @@
 16. What are Access Keys and when are they used
 17. Difference between data warehouses and data lake
 
-&nbsp;
 
-&nbsp;
-
-# Answers
-
-
-
-
-## 3. Difficult issue you solved
-
-I resolved two major operational pain points in our Snowflake environment by building two self-service Streamlit applications.
-
-**Problem 1: Slow, Manual Data Access Process**
-
-**The Reason**: All data asset access was managed by the Data Platform team. Whenever a team needed access to a data asset, the onboarding team had to submit a Jira service request. The VDP team would then review it, provision the foundational infrastructure, and grant access to the respective team members.
-
-A simple access request could take days due to ticket queues and manual back-and-forth, every team depended on them for access, slowing down development
-
-**The Solution** — Data Bridge Ops App: I built a Streamlit-in-Snowflake application where:
-
-- Data asset owners can register their assets and define environment-specific roles
-- Users can raise access requests themselves — no Jira ticket needed. They select the data asset, environment, target role, and provide a business justification
-- Data owners approve or reject directly in the app with comments
-- Approved grants have automatic expiration dates, so access doesn't linger forever
-- Every request, approval, and rejection is fully auditable in the history tab
-
-**The Impact**:
-
-- Access requests that took days now take minutes
-- Removed the dependency on the VDP team for routine access grants
-- Gave data owners direct control over who accesses their data
-- Created a complete audit trail for compliance
-
-&nbsp;
-
-**Problem 2: Offboarded Users Still Active in Snowflake**
-
-**The Reason**: When employees left the company, their Snowflake accounts were not being disabled promptly. We don't have visibility on any offboarding. For this:
-
-- former employees still had active credentials that could potentially be used to access sensitive data
-- nobody knew how many stale accounts existed or how long they'd been inactive
-
-**The Solution** — : I built a second Streamlit app named Inactive Users Dashboard that:
-
-- Queries SNOWFLAKE.ACCOUNT_USAGE.USERS to find all enabled users who haven't logged in for a certain period (default 3 months, adjustable up to 24)
-- Shows summary metrics — total inactive users, average days since last login, MFA adoption
-- Provides filters by authentication type (password, RSA key, MFA) and user type (human vs. service accounts)
-- Includes search to quickly find specific users
-- Offers CSV export so the security team can take the list and action it immediately
-
-**The Impact**:
-
-- Gave the security team instant visibility into stale accounts
-- Enabled proactive cleanup instead of waiting for an audit finding
-- Reduced the attack surface by identifying accounts that should be disabled
-- Provided evidence for compliance audits showing we actively monitor user hygiene
-
-&nbsp;
-
-&nbsp;
 
 ## 4. Why Snowflake? its architecture. Snowflake vs traditional databases
 
@@ -156,37 +85,6 @@ Another important advantage is version control and CI/CD. Our dbt SQL code is st
 
 So, Snowflake is still doing the actual computation, but dbt gives us a proper framework for managing, testing, versioning, and deploying our transformation logic.
 s
-&nbsp;
-
-&nbsp;
-
-## 7. micro-partitioning and partition pruning
-
-### What is micro-partitioning?
-
-When data is loaded into a Snowflake table, Snowflake automatically divides the table into small, contiguous storage units called micro-partitions.
-
-You don't manually create these partitions like traditional databases.
-
-For each micro-partition, Snowflake maintains metadata such as:
-
-- Minimum and maximum values
-- Number of distinct values
-- NULL information
-- Other statistics used by the optimizer
-
-&nbsp;
-
-### What is partition pruning?
-
-Partition pruning is the process of eliminating micro-partitions that cannot contain the required data before Snowflake scans them.
-
-```sql
-SELECT SUM(amount)
-FROM orders
-WHERE order_date BETWEEN '2026-08-01' AND '2026-08-31';
-```
-
 &nbsp;
 
 ## 5. Improve query performance?
