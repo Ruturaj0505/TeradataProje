@@ -10,9 +10,9 @@ iii. Insert-only: tracks inserts only, built for external tables (and Iceberg ta
 
 Metadata columns on every stream:
 
-METADATA$ACTION (INSERT/DELETE)
-METADATA$ISUPDATE
-METADATA$ROW_ID
+i.   METADATA$ACTION (INSERT/DELETE)
+ii.  METADATA$ISUPDATE
+iii. METADATA$ROW_ID
 
 &nbsp;
 
