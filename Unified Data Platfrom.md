@@ -4,16 +4,16 @@
 
          ERP Systems / REST APIs  → SNP Glue →  AWS S3 →  Snowpipe →  Snowflake Bronze →  Snapshots / Silver →  dbt Gold →  BI & Reporting
 
-In my UDP project, we integrate data from multiple ERP systems and REST APIs into Snowflake for reporting and analytics.
+The main objective UDP is to integrate data from multiple ERP systems and REST APIs into Snowflake for reporting and analytics.
 
-First, ERP data is extracted using SNP Glue, while the orchestration team handles data extraction from REST APIs. The extracted data is landed in AWS S3, which acts as our staging area.
+First, ERP data is extracted using SNP Glue, while the orchestration team handles data extraction from REST APIs. The extracted data is stored in AWS S3, which acts as our staging area.
 
-Once the files are available in S3, Snowpipe loads the data into Snowflake's Bronze layer, where we maintain the raw data.
+Next, Snowpipe loads the files from S3 into Snowflake's Bronze layer, where we store the raw data with minimal transformations.
 
-Next, we process the data through the snapshot and Silver layers, where records are prepared for downstream transformations. This includes activities such as deduplication and standardization, depending on the processing requirements.
+From Bronze, the data moves to the Silver layer, where we clean and standardize it. This includes handling duplicate records, converting data types, and applying data-quality rules. We also use snapshots to track data changes for the relevant tables.
 
-We then use dbt to transform the processed data into curated Gold-layer datasets. These models apply SQL transformations and business logic to make the data suitable for reporting and analytics.
+After that, the data moves to the Gold layer, where we use dbt to apply business logic, join related tables, and create curated datasets for reporting and analytics.
 
-One of the important components of our project is a metadata-driven utility that automates the creation of Snowpipes and snapshot objects for multiple tables. This reduces repetitive manual configuration and makes onboarding new tables easier.
+One important component of our project is a metadata-driven utility that automates the creation of Snowpipes and snapshot objects for multiple tables. This reduces repetitive manual configuration and makes it easier to onboard new tables.
 
-Finally, we validate the data using SQL checks and data-quality tests to ensure the processed data is reliable for downstream reporting.
+Finally, we perform SQL-based validations and data-quality checks to verify the data before it is used for downstream reporting.
