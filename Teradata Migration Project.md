@@ -8,13 +8,14 @@ In Snowflake, the data first lands in the L0 layer, our raw layer. We keep the s
 
 From L0 onwards, the transformations are built as dbt models in Snowflake. Once the InfoWorks load into L0 completes successfully, the dbt run is triggered [by the scheduled workflow / by the scheduler you use], first for L1 and then for L2. We use source() to read the L0 tables and ref() between models, so dbt handles lineage and run order.
 
-In L1, we clean the data: duplicates removed with ROW_NUMBER, mandatory null checks, data-type conversion, trimming and standardization, filtering invalid records, and dataset-specific business rules. In L2, we combine the L1 datasets, apply the final business logic, and create business-ready dimensions and facts. For example, customer data from one source and transaction data from another are integrated in L2 into a business-level dataset. For large tables, we use incremental models with the merge strategy, so only new or changed rows are processed.
+In L1, we clean the data: duplicates removed with ROW_NUMBER, mandatory null checks, data-type conversion, trimming and standardization, filtering invalid records, and dataset-specific business rules. 
+In L2, we combine the L1 datasets, apply the final business logic, and create business-ready dimensions and facts. For example, customer data from one source and transaction data from another are integrated in L2 into a business-level dataset. For large tables, we use incremental models with the merge strategy, so only new or changed rows are processed.
 
 We also added dbt tests such as unique, not_null, and relationships, so data quality problems are caught when the models run.
 
 After L2, we do final validation: record counts, duplicate checks, null checks, reconciliation against Teradata, and business-rule checks. The reporting team then consumes the L2 tables or views for Power BI.
 
-The overall flow is: Teradata → InfoWorks → Snowflake L0 → dbt L1 → dbt L2 → Power BI."
+#The overall flow is: Teradata → InfoWorks → Snowflake L0 → dbt L1 → dbt L2 → Power BI."
 
 Updated layer answers
 L0: "InfoWorks extracts the data from Teradata and loads it into Snowflake L0. We preserve the source data with minimal transformation and do technical validations."
