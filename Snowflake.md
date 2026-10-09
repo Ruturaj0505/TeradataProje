@@ -1,4 +1,4 @@
-## What is Streams and Types of Streams ?
+### 1. What is Streams and Types of Streams ?
 
 Snowflake streams is change data capture(CDC) machanism used to track changes in data at row level in snowflake.
 
@@ -14,9 +14,9 @@ METADATA$ACTION (INSERT/DELETE)
 METADATA$ISUPDATE
 METADATA$ROW_ID
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
+&nbsp;
 
-## what is Snowpipe and how it works?
+### 2. what is Snowpipe and how it works?
    Snowpipe is Snowflake’s continuous data ingestion service. It is used to automatically load new files from cloud storage like Amazon S3 into a Snowflake table as soon as they arrive.
    
 The flow is: S3 → Event Notification → Snowpipe → Snowflake staging table.
@@ -26,16 +26,17 @@ For example, when a new JSON or CSV file is uploaded to S3, an event notificatio
 What happens if Snowpipe fails?"
 “First, I check the Snowpipe load history and error details to identify whether the issue is related to the file, permissions, stage, or target table. After fixing the issue, I reprocess the failed files and validate the record count and data quality.”
 
------------------------------------------------------------------------------------------------------------------------------------------------------------
+&nbsp;
 
-## What is task and how it works ?
+### 3. What is task and how it works ?
 
 A Snowflake Task is used to automate SQL statements or stored procedures. We can schedule a task to run at a specific time or at a regular interval, and we can also create task dependencies where one task runs after another.
 For example, in my pipeline, after Snowpipe loads data from S3 into the staging table, a Task can pick up that data, perform transformations, and load it into the target table.
 So basically, Snowpipe handles the ingestion, and Task handles the automated processing or transformation.”
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### What is micro-partitioning?
+&nbsp;
+
+### 4. What is micro-partitioning?
 
 When data is loaded into a Snowflake table, Snowflake automatically divides the table into small, contiguous storage units called micro-partitions.
 
@@ -50,7 +51,7 @@ For each micro-partition, Snowflake maintains metadata such as:
 
 &nbsp;
 
-### What is partition pruning?
+### 5.What is partition pruning?
 
 Partition pruning is the process of eliminating micro-partitions that cannot contain the required data before Snowflake scans them.
 
