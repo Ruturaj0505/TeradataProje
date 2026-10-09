@@ -1,4 +1,4 @@
-# TeradataProject
+## TeradataProject
 
 In our project, Teradata is one of the main source systems. The data is generated or updated in Teradata during the business day, and based on the agreed batch schedule, the required data is picked up for downstream processing.
 
