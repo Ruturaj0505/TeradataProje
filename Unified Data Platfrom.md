@@ -1,4 +1,4 @@
-### Unified DATA platfrom
+### Unified Data Platfrom
 
 UDP, the Unified Data Platform, was a project where we brought data from multiple ERP source systems into one platform on Snowflake, so the business could do cross-system reporting and analytics. I worked on it as a Data Engineer from December 2022 to March 2025.
 
