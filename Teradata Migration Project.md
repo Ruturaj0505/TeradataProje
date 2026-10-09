@@ -15,7 +15,7 @@ We also added dbt tests such as unique, not_null, and relationships, so data qua
 
 After L2, we do final validation: record counts, duplicate checks, null checks, reconciliation against Teradata, and business-rule checks. The reporting team then consumes the L2 tables or views for Power BI.
 
-# The overall flow is: Teradata → InfoWorks → Snowflake L0 → dbt L1 → dbt L2 → Power BI."
+## The overall flow is: Teradata → InfoWorks → Snowflake L0 → dbt L1 → dbt L2 → Power BI."
 
 Updated layer answers
 L0: "InfoWorks extracts the data from Teradata and loads it into Snowflake L0. We preserve the source data with minimal transformation and do technical validations."
